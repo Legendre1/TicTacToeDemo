@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PulseButtonScale : MonoBehaviour {
+    //Simple pulsing script, when an animation isnt the right solution
 
+    #region Member Vars
+
+    //Adjustable parameters for pulsing algorithm
     public float m_initial_delay;
-
     public float m_pulse_duration;
     public int m_pulses_per_cycle;
-
     public float m_wait_duration;
-
     public Vector3 m_pulse_scale;
 
+    //Private vars
     private Vector3 m_starting_scale;
 
-	// Use this for initialization
-	void Start () {
+    #endregion
+
+    void Start () {
         m_starting_scale = transform.localScale;
         StartCoroutine(pulseContinuously());
 	}
