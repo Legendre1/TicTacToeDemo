@@ -7,8 +7,8 @@ public static class ApplicationLifecycleManager {
 
 	
 	public static void GoToOptionsMenu()
-    { 
-    
+    {
+        SceneManager.LoadScene("OptionsMenu");
     }
 
     public static void GoToMainMenu()
