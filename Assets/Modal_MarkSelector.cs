@@ -32,6 +32,11 @@ public class Modal_MarkSelector : Modal_Base {
         m_animator.SetBool("active", false);
     }
 
+    public void onExitAnimationCompleted()
+    {
+        TTTGameManager.GetInstance().playerSelectionComplete();
+    }
+
     private void setForSelectingPlayer(int player_num)
     {
         m_selecting_text.text = string.Format(SELECTION_TEXT, player_num);
