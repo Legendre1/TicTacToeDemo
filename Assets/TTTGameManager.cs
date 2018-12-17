@@ -37,10 +37,17 @@ public class TTTGameManager : MonoBehaviour {
 
     #region Member Vars
 
+    public UI_Manager m_ui_manager;
     public Modal_MarkSelector m_mark_selector_modal;
 
     private GameState m_gamestate;
     private TTT_Gameboard m_gameboard;
+
+    private Sprite[] m_player_mark_sprites;
+
+    //Constants
+    private const string MAKE_MOVE_TEXT = "Make your move, Player {0}";
+    private const int NUMBER_OF_PLAYERS = 2;
 
     #endregion
 
@@ -56,6 +63,7 @@ public class TTTGameManager : MonoBehaviour {
         m_gameboard = TTT_Gameboard.GetInstance();
 
         //begin by selecting the marks each player will use
+        m_player_mark_sprites = new Sprite[NUMBER_OF_PLAYERS];
         selectPlayerMarks();
     }
 
@@ -71,18 +79,22 @@ public class TTTGameManager : MonoBehaviour {
         selectMarkForPlayer(1);
     }
 
+
+
     private void selectMarkForPlayer(int player_num)
     {
+        Debug.Log("Selecting mark for player " + player_num);
         if(player_num == 1)
         {
             m_gamestate = GameState.Player1_SelectMark;
+            m_mark_selector_modal.triggerModal(player_num);
         }
         else if(player_num == 2)
         {
             m_gamestate = GameState.Player2_SelectMark;
+            Sprite player_1_sprite = m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1];
+            m_mark_selector_modal.triggerModal(player_num, player_1_sprite);
         }
-
-        m_mark_selector_modal.triggerModal(player_num);
     }
 
     #endregion
@@ -100,22 +112,30 @@ public class TTTGameManager : MonoBehaviour {
     {
         int board_size = UserdataManager.GetGridSize();
         m_gameboard.constructGameBoard(board_size);
+        m_gameboard.setPlayerMarkDefinitions( 
+            m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1],
+            m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player2]);
     }
 
     #endregion
 
     #region Public State Methods
-
     //these methods respond to outside signals that the game state needs to change
-    public void playerSelectionComplete()
+
+    public void reportSelectedMark(Sprite selected_sprite)
     {
-        //Modal reports that a mark selection was made. Advance gamestate.
+        Debug.Log("Selected sprite " + selected_sprite);
+        //Modal reports that a players selection of marking sprite was made. Advance gamestate.
         if (m_gamestate == GameState.Player1_SelectMark)
         {
+            m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1] = selected_sprite;
+            //player 1 has selected, ask for player 2s choice
             selectMarkForPlayer(2);
         }
         else if (m_gamestate == GameState.Player2_SelectMark)
         {
+            m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player2] = selected_sprite;
+            //player 2 has selected, begin the game
             beginGame();
         }
         else
@@ -159,6 +179,7 @@ public class TTTGameManager : MonoBehaviour {
         if (player_num == 1)
         {
             m_gamestate = GameState.Player1_Turn;
+            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player1, string.Format(MAKE_MOVE_TEXT, player_num));
         }
         else if (player_num == 2)
         {

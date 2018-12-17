@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TTT_Gameboard : MonoBehaviour {
     //this is a helper class for TTTGameManager. It handles construction of and top down interface with the game "board" of selectable tiles
@@ -24,20 +25,24 @@ public class TTT_Gameboard : MonoBehaviour {
     public float m_outer_board_buffer_width;
 
     private List<TTT_Tile> m_board_tiles;
+    private Image m_board_image;
+    private RectTransform m_board_rectform;
 
     #endregion
 
     private void Start()
     {
         s_instance = this;
+        m_board_image = GetComponent<Image>();
+        m_board_rectform = GetComponent<RectTransform>();
     }
 
     public void constructGameBoard(int grid_size)
     {
         //Resize the gameboard image to fit all tiles
-        RectTransform board_rectform = GetComponent<RectTransform>();
         float board_side_length = (m_tile_spacing * (grid_size)) + (2 * m_outer_board_buffer_width);
-        board_rectform.sizeDelta = new Vector2(board_side_length, board_side_length);
+        m_board_rectform.sizeDelta = new Vector2(board_side_length, board_side_length);
+        showBoard();
 
         //Fill the board with tiles
         float half_anchor_width = m_tile_spacing * grid_size / 2;
@@ -61,6 +66,14 @@ public class TTT_Gameboard : MonoBehaviour {
         }
     }
 
+    public void setPlayerMarkDefinitions(Sprite player_1_sprite, Sprite player_2_sprite)
+    {
+        for (int n = 0; n < m_board_tiles.Count; n++)
+        {
+            m_board_tiles[n].assignPlayerMarks(player_1_sprite, player_2_sprite);
+        }
+    }
+
     public void setTilesToAcceptInput(TTTGameManager.GameState current_state)
     { 
         for(int n = 0; n < m_board_tiles.Count; n++)
@@ -80,4 +93,18 @@ public class TTT_Gameboard : MonoBehaviour {
 
         return TTTGameManager.GameCompletion.Incomplete;
     }
+
+    #region Utility
+
+    private void showBoard()
+    {
+        m_board_image.color = Color.white;
+    }
+
+    private void hideBoard()
+    {
+        m_board_image.color = Color.clear;
+    }
+
+    #endregion
 }
