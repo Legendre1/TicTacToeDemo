@@ -160,7 +160,7 @@ public class TTTGameManager : MonoBehaviour {
         {
             getInputFromPlayer(2);
         }
-        else if (m_gamestate == GameState.Player2_SelectMark)
+        else if (m_gamestate == GameState.Player2_Turn)
         {
             getInputFromPlayer(1);
         }
@@ -184,6 +184,7 @@ public class TTTGameManager : MonoBehaviour {
         else if (player_num == 2)
         {
             m_gamestate = GameState.Player2_Turn;
+            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player2, string.Format(MAKE_MOVE_TEXT, player_num));
         }
 
         m_gameboard.setTilesToAcceptInput(m_gamestate);
