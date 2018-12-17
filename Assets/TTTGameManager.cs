@@ -179,12 +179,14 @@ public class TTTGameManager : MonoBehaviour {
         if (player_num == 1)
         {
             m_gamestate = GameState.Player1_Turn;
-            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player1, string.Format(MAKE_MOVE_TEXT, player_num));
+            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player1, string.Format(MAKE_MOVE_TEXT,
+                                                player_num), m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1]);
         }
         else if (player_num == 2)
         {
             m_gamestate = GameState.Player2_Turn;
-            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player2, string.Format(MAKE_MOVE_TEXT, player_num));
+            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player2, string.Format(MAKE_MOVE_TEXT, 
+                                                player_num), m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player2]);
         }
 
         m_gameboard.setTilesToAcceptInput(m_gamestate);

@@ -21,7 +21,12 @@ public class UI_AnimatedElement : MonoBehaviour {
 
         if (output_sprite != null)
         {
+            m_image.color = Color.white;
             m_image.sprite = output_sprite;
+        }
+        else
+        {
+            m_image.color = Color.clear;
         }
 
         //animate in
