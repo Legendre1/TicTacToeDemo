@@ -1054,6 +1054,10 @@ MonoBehaviour:
     type: 2}
   m_tile_spacing: 160
   m_outer_board_buffer_width: 15
+  m_3x3_winconditions: {fileID: 11400000, guid: 14507d98f7dfa43d5845dbc5b774167b,
+    type: 2}
+  m_4x4_winconditions: {fileID: 11400000, guid: c053c0a25f4f344fe8543de1e970756b,
+    type: 2}
 --- !u!114 &388543759
 MonoBehaviour:
   m_ObjectHideFlags: 0

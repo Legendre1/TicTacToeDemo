@@ -7,7 +7,7 @@ public class TTT_Tile : MonoBehaviour {
 
     #region Classes and Enums
 
-    private enum TileState
+    public enum TileState
     { 
         NONE = -1,
         PLAYER_1 = 0,//chosen so that they map to the index of m_player_mark_sprites
@@ -35,6 +35,11 @@ public class TTT_Tile : MonoBehaviour {
     }
 
     #region Public Access
+
+    public TileState getTileMarkState()
+    {
+        return m_tilemark_state;
+    }
 
     public void assignPlayerMarks(Sprite player_1_mark, Sprite player_2_mark)
     {

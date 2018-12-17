@@ -18,7 +18,8 @@ public class TTTGameManager : MonoBehaviour {
     public enum GameCompletion
     { 
         Incomplete,
-        Win,
+        Win_Player1,
+        Win_Player2,
         Draw
     }
 
@@ -194,7 +195,7 @@ public class TTTGameManager : MonoBehaviour {
 
     private void gameOver(GameCompletion completion)
     { 
-        if(completion == GameCompletion.Win)
+        if(completion == GameCompletion.Win_Player1 || completion == GameCompletion.Win_Player2)
         {
             Debug.Log("WIN");
         }

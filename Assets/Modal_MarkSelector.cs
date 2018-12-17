@@ -46,11 +46,8 @@ public class Modal_MarkSelector : Modal_Base {
         }
     }
 
-
-
     public void selectionMade(int selection)
     {
-        Debug.Log("Selection Made " + selection);
         m_selected_sprite_index = selection;
         m_completion_button_go.SetActive(true);
     }
