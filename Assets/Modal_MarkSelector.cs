@@ -21,6 +21,11 @@ public class Modal_MarkSelector : Modal_Base {
         m_animator.SetBool("active", true);
     }
 
+    public void disableMarkChoice(int choice_index)
+    {
+        m_toggles[choice_index].gameObject.SetActive(false);
+    }
+
     public void selectionMade(int selection)
     {
         Debug.Log("Chose " + selection);
@@ -52,6 +57,7 @@ public class Modal_MarkSelector : Modal_Base {
     { 
         for(int n = 0; n < m_toggles.Length; n++)
         {
+            m_toggles[n].gameObject.SetActive(true);//in case they were disabled in a previous game
             m_toggles[n].isOn = false;
         }
     }
