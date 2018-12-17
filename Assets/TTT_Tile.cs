@@ -19,6 +19,7 @@ public class TTT_Tile : MonoBehaviour {
     #region Member Vars
 
     public Image m_mark_image;
+    public PulseButtonScale m_scale_pulser;
 
     private TileState m_input_state;
     private TileState m_tilemark_state;
@@ -59,6 +60,11 @@ public class TTT_Tile : MonoBehaviour {
         else if (game_state == TTTGameManager.GameState.Player2_Turn)
         {
             m_input_state = TileState.PLAYER_2;
+        }
+        else if (game_state == TTTGameManager.GameState.GameOver)
+        {
+            //the game has ended, do not accept further input
+            m_input_state = TileState.NONE;
         }
         else
         {

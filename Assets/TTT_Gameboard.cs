@@ -34,6 +34,9 @@ public class TTT_Gameboard : MonoBehaviour {
     private RectTransform m_board_rectform;
     private TTT_Tile[] m_possible_winning_tiles;//array of tiles to be examined for a win and reused
 
+    //Constants
+    private const float WIN_PULSE_DELAY = 0.4f;//the timing between pulses of tiles showing a winning sequence
+
     #endregion
 
     #region Mono Methods
@@ -120,12 +123,14 @@ public class TTT_Gameboard : MonoBehaviour {
         //search for a win by either player
         int winning_player = searchForWinningPlayer();
         if(winning_player >= 0)
-        { 
-            if(winning_player == 0)
+        {
+            highlightWinningSequence();
+
+            if (winning_player ==(int)UI_Manager.PlayerUIIndex.Player1)
             {
                 return TTTGameManager.GameCompletion.Win_Player1;
             }
-            else if(winning_player == 1)
+            else if(winning_player == (int)UI_Manager.PlayerUIIndex.Player2)
             {
                 return TTTGameManager.GameCompletion.Win_Player2;
             }
@@ -224,6 +229,17 @@ public class TTT_Gameboard : MonoBehaviour {
     #endregion
 
     #region Utility
+
+    private void highlightWinningSequence()
+    {
+        //the last possible winning sequence is the one that registered a win, use it again here
+        for (int n = 0; n < m_possible_winning_tiles.Length; n++)
+        {
+            Debug.Log("Pulsing tile " + name);
+            TTT_Tile winning_tile = m_possible_winning_tiles[n];
+            winning_tile.m_scale_pulser.activatePulsingButton(n * WIN_PULSE_DELAY);
+        }
+    }
 
     private void showBoard()
     {

@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114319148431755450}
   - component: {fileID: 114429414991363594}
   - component: {fileID: 114505621122245494}
+  - component: {fileID: 114847406706776922}
   m_Layer: 5
   m_Name: TTT_Tile
   m_TagString: Untagged
@@ -165,6 +166,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_mark_image: {fileID: 114065300070702706}
+  m_scale_pulser: {fileID: 114847406706776922}
+--- !u!114 &114847406706776922
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1511394341851506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c739ddde2710e4a5996874fc4b81f03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_initial_delay: 0
+  m_pulse_duration: 0.3
+  m_pulses_per_cycle: 2
+  m_wait_duration: 1.5
+  m_pulse_scale: {x: 1.2, y: 1.2, z: 1.2}
+  m_manually_initiated: 1
 --- !u!222 &222520589682279816
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -13,22 +13,58 @@ public class PulseButtonScale : MonoBehaviour {
     public int m_pulses_per_cycle;
     public float m_wait_duration;
     public Vector3 m_pulse_scale;
+    public bool m_manually_initiated;
 
     //Private vars
     private Vector3 m_starting_scale;
+    private bool m_pulsing_active;
 
     #endregion
 
-    void Start () {
-        m_starting_scale = transform.localScale;
-        StartCoroutine(pulseContinuously());
-	}
-	
-	private IEnumerator pulseContinuously()
+    void Start ()
     {
+        m_starting_scale = transform.localScale;
+
+        if (!m_manually_initiated)
+        {
+            beginPulsingCoroutine();
+        }
+	}
+
+    public void activatePulsingButton(float initial_delay = -1)
+    {
+        if (m_manually_initiated)
+        { 
+            if(initial_delay >= 0)
+            {
+                m_initial_delay = initial_delay;
+            }
+            beginPulsingCoroutine();
+        }
+        else
+        {
+            Debug.LogError("Pulsing element is marked to start automatically, cannot be manually activated");
+        }
+    }
+
+    public void deactivatePulsingButton()
+    {
+        m_pulsing_active = false;
+    }
+
+    private void beginPulsingCoroutine()
+    {
+        m_pulsing_active = true;
+        StartCoroutine(pulseContinuously());
+    }
+
+
+    private IEnumerator pulseContinuously()
+    {
+        transform.localScale = m_starting_scale;
         yield return new WaitForSeconds(m_initial_delay);
 
-        while(true)
+        while(m_pulsing_active)
         {
             for(int n = 0; n < m_pulses_per_cycle; n++)
             {

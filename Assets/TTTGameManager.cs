@@ -194,7 +194,12 @@ public class TTTGameManager : MonoBehaviour {
     }
 
     private void gameOver(GameCompletion completion)
-    { 
+    {
+        //end the game, tell the tiles to stop accepting input
+        m_gamestate = GameState.GameOver;
+        m_gameboard.setTilesToAcceptInput(m_gamestate);
+
+
         if(completion == GameCompletion.Win_Player1 || completion == GameCompletion.Win_Player2)
         {
             Debug.Log("WIN");
