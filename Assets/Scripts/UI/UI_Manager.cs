@@ -65,10 +65,12 @@ public class UI_Manager : MonoBehaviour {
         m_input_blocker_go.SetActive(false);
     }
 
-    public void presentGameOverModal(bool winner_declared, string winning_player = "", Sprite winning_sprite = null)
+    public void presentGameOverModal(bool winner_declared, float delay, string winning_player = "", Sprite winning_sprite = null)
     {
-        m_gameover_modal.triggerModal(winner_declared, winning_player, winning_sprite);
+        StartCoroutine(EpresentGameOverModalAfterDelay(winner_declared, delay, winning_player, winning_sprite));
     }
+
+
 
     public void presentBinaryChoiceModal(string title, string description, string b1_text, string b2_text,
                                 TTTGameManager.VoidCallback b1_callback, TTTGameManager.VoidCallback b2_callback)
@@ -78,6 +80,15 @@ public class UI_Manager : MonoBehaviour {
 
     #endregion
 
+    #region Coroutines
+
+    private IEnumerator EpresentGameOverModalAfterDelay(bool winner_declared, float delay, string winning_player = "", Sprite winning_sprite = null)
+    {
+        yield return new WaitForSeconds(delay);
+        m_gameover_modal.triggerModal(winner_declared, winning_player, winning_sprite);
+    }
+
+    #endregion
 
 
 }

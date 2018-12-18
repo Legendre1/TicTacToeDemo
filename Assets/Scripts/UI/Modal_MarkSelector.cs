@@ -18,12 +18,12 @@ public class Modal_MarkSelector : Modal_Base {
     public void triggerModal(string selecting_player_name, Sprite dissallowed_sprite = null)
     {
         setForSelectingPlayer(selecting_player_name);
-
         initializeSelectionDisplay();
+
+        //if the pther player already chose a mark, do not give it as an option here.
         if(dissallowed_sprite != null)
         {
             int dissallowed_index = getIndexOfSprite(dissallowed_sprite);
-            Debug.Log("Disabling mark " + dissallowed_index);
             disableMarkChoice(dissallowed_index);
         }
 
@@ -81,9 +81,11 @@ public class Modal_MarkSelector : Modal_Base {
     }
 
     private void resetToggles()
-    { 
+    {
+        Debug.Log("Resetting toggles");
         for(int n = 0; n < m_toggles.Length; n++)
         {
+            Debug.Log("Resetting toggle " + n);
             m_toggles[n].gameObject.SetActive(true);//in case they were disabled in a previous game
             m_toggles[n].isOn = false;
         }

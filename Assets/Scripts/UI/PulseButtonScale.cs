@@ -55,11 +55,11 @@ public class PulseButtonScale : MonoBehaviour {
     private void beginPulsingCoroutine()
     {
         m_pulsing_active = true;
-        StartCoroutine(pulseContinuously());
+        StartCoroutine(EpulseContinuously());
     }
 
 
-    private IEnumerator pulseContinuously()
+    private IEnumerator EpulseContinuously()
     {
         transform.localScale = m_starting_scale;
         yield return new WaitForSeconds(m_initial_delay);
@@ -68,14 +68,14 @@ public class PulseButtonScale : MonoBehaviour {
         {
             for(int n = 0; n < m_pulses_per_cycle; n++)
             {
-                yield return StartCoroutine(pulse());
+                yield return StartCoroutine(Epulse());
             }
 
             yield return new WaitForSeconds(m_wait_duration);
         }
     }
 
-    private IEnumerator pulse()
+    private IEnumerator Epulse()
     {
         float pulse_lifetime = 0.0f;
         float pulse_half_duration = m_pulse_duration / 2;

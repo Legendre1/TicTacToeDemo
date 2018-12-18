@@ -58,6 +58,7 @@ public class TTTGameManager : MonoBehaviour {
     private const string NO = "No";
 
     private const int NUMBER_OF_PLAYERS = 2;
+    private const float GAME_OVER_DELAY = 1.5f;//postgame delay for final board evaluation before showing the game over menu
 
     #endregion
 
@@ -238,12 +239,12 @@ public class TTTGameManager : MonoBehaviour {
             }
             Sprite winners_sprite = m_player_mark_sprites[winner_index];
 
-            m_ui_manager.presentGameOverModal(true, completion.ToString(), winners_sprite);
+            m_ui_manager.presentGameOverModal(true, GAME_OVER_DELAY, m_player_names[winner_index], winners_sprite);
         }
         else if(completion == GameCompletion.Draw)
         {
             Debug.Log("DRAW");
-            m_ui_manager.presentGameOverModal(false);
+            m_ui_manager.presentGameOverModal(false, GAME_OVER_DELAY);
         }
         else
         {
