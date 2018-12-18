@@ -5,7 +5,7 @@ using UnityEngine;
 public static class UserdataManager
 {
     //This class acts as a wrapper around Unity's userdata storage system
-
+    private static int DEFAULT_GRID_SIZE;
 
     //this helps to prevent typos in player prefs string keys
     private static class StorageFields
@@ -21,9 +21,8 @@ public static class UserdataManager
         if (grid_size != 3 && grid_size != 4)
         {
             Debug.LogError("Grid size must be either 3 or 4!");
+            return;
         }
-
-        Debug.Log("Setting to " + grid_size);
 
         PlayerPrefs.SetInt(StorageFields.GridSize, grid_size);
     }
@@ -34,7 +33,7 @@ public static class UserdataManager
         if (grid_size == 0)
         {
             //initialize the value if it is unset
-            grid_size = 3;
+            grid_size = DEFAULT_GRID_SIZE;
             PlayerPrefs.SetInt(StorageFields.GridSize, grid_size);
         }
 
