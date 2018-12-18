@@ -17,7 +17,7 @@ public static class ApplicationLifecycleManager {
     }
 
     public static void GoToTTTGame()
-    { 
-    
+    {
+        SceneManager.LoadScene("TTTGame");
     }
 }
