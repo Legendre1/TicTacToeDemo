@@ -70,8 +70,6 @@ public class UI_Manager : MonoBehaviour {
         StartCoroutine(EpresentGameOverModalAfterDelay(winner_declared, delay, winning_player, winning_sprite));
     }
 
-
-
     public void presentBinaryChoiceModal(string title, string description, string b1_text, string b2_text,
                                 TTTGameManager.VoidCallback b1_callback, TTTGameManager.VoidCallback b2_callback)
     {
@@ -82,7 +80,7 @@ public class UI_Manager : MonoBehaviour {
 
     #region Coroutines
 
-    private IEnumerator EpresentGameOverModalAfterDelay(bool winner_declared, float delay, string winning_player = "", Sprite winning_sprite = null)
+    private IEnumerator EpresentGameOverModalAfterDelay(bool winner_declared, float delay, string winning_player, Sprite winning_sprite)
     {
         yield return new WaitForSeconds(delay);
         m_gameover_modal.triggerModal(winner_declared, winning_player, winning_sprite);

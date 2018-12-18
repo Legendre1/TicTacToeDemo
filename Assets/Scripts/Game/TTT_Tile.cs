@@ -27,6 +27,9 @@ public class TTT_Tile : MonoBehaviour {
 
     private TTTGameManager m_game_manager;
 
+    private int m_row_index;
+    private int m_column_index;
+
     #endregion
 
     private void Start()
@@ -40,6 +43,12 @@ public class TTT_Tile : MonoBehaviour {
     public TileState getTileMarkState()
     {
         return m_tilemark_state;
+    }
+
+    public void assignGridIndices(int grid_x, int grid_y)
+    {
+        m_column_index = grid_x;
+        m_row_index = grid_y;
     }
 
     public void assignPlayerMarks(Sprite player_1_mark, Sprite player_2_mark)
@@ -97,12 +106,13 @@ public class TTT_Tile : MonoBehaviour {
             else
             {
                 //input is valid, set the persistent tilemark_state to match the current players mark and input state
-                Sprite marking_sprite = m_player_mark_sprites[(int)m_input_state];
+                Sprite marking_sprite = m_player_mark_sprites[(int)m_input_state];//[(int)m_input_state is equivalent to the index of the player who made this selection
 
                 setMarkImageSprite(marking_sprite);
                 m_tilemark_state = m_input_state;
 
                 //inform the game that the user made input and marked his tile
+                m_game_manager.recordMoveInHistory((int)m_input_state, m_column_index, m_row_index);
                 m_game_manager.playerTileChoiceComplete();
             }
         }

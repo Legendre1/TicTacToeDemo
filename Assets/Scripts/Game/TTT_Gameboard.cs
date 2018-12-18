@@ -77,6 +77,7 @@ public class TTT_Gameboard : MonoBehaviour {
                 //add ref to active list for further access
                 TTT_Tile new_tile = new_tile_go.GetComponent<TTT_Tile>();
                 m_board_tiles.Add(new_tile);
+                new_tile.assignGridIndices(n, m);
             }
         }
 
@@ -248,7 +249,6 @@ public class TTT_Gameboard : MonoBehaviour {
         //the last possible winning sequence is the one that registered a win, use it again here
         for (int n = 0; n < m_possible_winning_tiles.Length; n++)
         {
-            Debug.Log("Pulsing tile " + name);
             TTT_Tile winning_tile = m_possible_winning_tiles[n];
             winning_tile.m_scale_pulser.activatePulsingButton(n * WIN_PULSE_DELAY);
         }
@@ -282,7 +282,7 @@ public class TTT_Gameboard : MonoBehaviour {
                 return;
             }
         }
-        Debug.Log("Win conditions match grid size!");
+        Debug.Log("All win conditions match grid size.");
     }
 
     #endregion

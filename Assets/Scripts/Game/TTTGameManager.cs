@@ -49,6 +49,9 @@ public class TTTGameManager : MonoBehaviour {
 
     private Sprite[] m_player_mark_sprites;
 
+    //Move history
+    private GameHistory m_game_history;
+
     //Constants
     private const string MAKE_MOVE_TEXT = "Make your move, {0}";
 
@@ -72,6 +75,10 @@ public class TTTGameManager : MonoBehaviour {
 
         //get helper script references
         m_gameboard = TTT_Gameboard.GetInstance();
+
+        //initialize the game history data
+        m_game_history = new GameHistory();
+        m_game_history.Initialize();
 
         //begin by selecting the marks each player will use
         m_player_mark_sprites = new Sprite[NUMBER_OF_PLAYERS];
@@ -134,7 +141,6 @@ public class TTTGameManager : MonoBehaviour {
 
     public void reportSelectedMark(Sprite selected_sprite)
     {
-        Debug.Log("Selected sprite " + selected_sprite);
         //Modal reports that a players selection of marking sprite was made. Advance gamestate.
         if (m_gamestate == GameState.Player1_SelectMark)
         {
@@ -154,13 +160,17 @@ public class TTTGameManager : MonoBehaviour {
         }
     }
 
+    public void recordMoveInHistory(int player_index, int column_index, int row_index)
+    {
+        m_game_history.AppendMove(player_index, column_index, row_index);
+    }
+
     public void playerTileChoiceComplete()
     {
         //A gameboard tile reports that a mark selection was made. Check to see if the game is over
         GameCompletion completion = m_gameboard.checkForGameCompletion();
         if (completion != GameCompletion.Incomplete)
         {
-            Debug.Log("Game completed");
             gameOver(completion);
             return;
         }
@@ -227,7 +237,6 @@ public class TTTGameManager : MonoBehaviour {
 
         if(completion == GameCompletion.Win_Player1 || completion == GameCompletion.Win_Player2)
         {
-            Debug.Log("WIN");
             int winner_index = -1;
             if(completion == GameCompletion.Win_Player1)
             {
@@ -243,7 +252,6 @@ public class TTTGameManager : MonoBehaviour {
         }
         else if(completion == GameCompletion.Draw)
         {
-            Debug.Log("DRAW");
             m_ui_manager.presentGameOverModal(false, GAME_OVER_DELAY);
         }
         else
@@ -263,5 +271,15 @@ public class TTTGameManager : MonoBehaviour {
     }
 
     #endregion
+
+
+#if UNITY_EDITOR
+    #region Print Move History (Editor Only)
+    public void printMoveHistory()
+    {
+        m_game_history.PrintWinHistoryToConsole();
+    }
+    #endregion
+#endif
 
 }

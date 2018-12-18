@@ -8,6 +8,7 @@ public class Modal_MarkSelector : Modal_Base {
     public Text m_selecting_text;
     public Toggle[] m_toggles;
     public GameObject m_completion_button_go;//"go" means "game object" here-not the button behavior itself
+    public ToggleGroup m_toggle_group;
 
     //these must be set in the editor in indices which match up to the indices of int args passed to "selectionMade"
     public Sprite[] m_mark_sprites;
@@ -82,13 +83,13 @@ public class Modal_MarkSelector : Modal_Base {
 
     private void resetToggles()
     {
-        Debug.Log("Resetting toggles");
-        for(int n = 0; n < m_toggles.Length; n++)
+        m_toggle_group.allowSwitchOff = true;
+        for (int n = 0; n < m_toggles.Length; n++)
         {
-            Debug.Log("Resetting toggle " + n);
             m_toggles[n].gameObject.SetActive(true);//in case they were disabled in a previous game
             m_toggles[n].isOn = false;
         }
+        m_toggle_group.allowSwitchOff = false;
     }
 
     private int getIndexOfSprite(Sprite s)

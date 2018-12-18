@@ -181,7 +181,7 @@ MonoBehaviour:
   m_initial_delay: 0
   m_pulse_duration: 0.3
   m_pulses_per_cycle: 2
-  m_wait_duration: 1.5
+  m_wait_duration: 3
   m_pulse_scale: {x: 1.2, y: 1.2, z: 1.2}
   m_manually_initiated: 1
 --- !u!222 &222520589682279816
