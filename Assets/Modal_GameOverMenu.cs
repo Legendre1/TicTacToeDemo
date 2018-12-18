@@ -12,7 +12,7 @@ public class Modal_GameOverMenu : Modal_Base
     public Image[] m_winning_sprite_dancers;
 
     private const string DRAW_TEXT = "Draw game...nobody wins.";
-    private const string WINNER_TEXT = "Player {0} Wins!";
+    private const string WINNER_TEXT = "{0}      Wins!";
 
     #endregion
 

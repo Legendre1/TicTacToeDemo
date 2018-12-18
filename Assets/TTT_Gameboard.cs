@@ -101,6 +101,19 @@ public class TTT_Gameboard : MonoBehaviour {
 #endif
     }
 
+    public void clearBoard()
+    {
+        //Clear the board from view but keep it intact
+        Debug.Log("Clear board");
+        hideBoard();
+
+        foreach(TTT_Tile tile in m_board_tiles)
+        {
+            tile.GetComponent<PulseButtonScale>().deactivatePulsingButton();
+            tile.clearTile();
+        }
+    }
+
     public void setPlayerMarkDefinitions(Sprite player_1_sprite, Sprite player_2_sprite)
     {
         for (int n = 0; n < m_board_tiles.Count; n++)

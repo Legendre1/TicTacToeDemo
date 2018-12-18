@@ -12,14 +12,12 @@ public class Modal_MarkSelector : Modal_Base {
     //these must be set in the editor in indices which match up to the indices of int args passed to "selectionMade"
     public Sprite[] m_mark_sprites;
 
-    private int m_player_selecting;
     private int m_selected_sprite_index;
-    private const string SELECTION_TEXT = "Player {0} -     Choose Your Mark";
+    private const string SELECTION_TEXT = "{0} -       Choose Your Mark";
 
-    public void triggerModal(int player_to_select, Sprite dissallowed_sprite = null)
+    public void triggerModal(string selecting_player_name, Sprite dissallowed_sprite = null)
     {
-        m_player_selecting = player_to_select;
-        setForSelectingPlayer(m_player_selecting);
+        setForSelectingPlayer(selecting_player_name);
 
         initializeSelectionDisplay();
         if(dissallowed_sprite != null)
@@ -71,9 +69,9 @@ public class Modal_MarkSelector : Modal_Base {
         m_toggles[choice_index].gameObject.SetActive(false);
     }
 
-    private void setForSelectingPlayer(int player_num)
+    private void setForSelectingPlayer(string player_name)
     {
-        m_selecting_text.text = string.Format(SELECTION_TEXT, player_num);
+        m_selecting_text.text = string.Format(SELECTION_TEXT, player_name);
     }
 
     private void initializeSelectionDisplay()

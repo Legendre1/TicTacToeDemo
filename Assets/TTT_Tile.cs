@@ -72,6 +72,12 @@ public class TTT_Tile : MonoBehaviour {
         }
     }
 
+    public void clearTile()
+    {
+        initializeTile();
+        clearMarkImageSprite();
+    }
+
     #endregion
 
     #region Button Press Method

@@ -42,6 +42,7 @@ public class TTTGameManager : MonoBehaviour {
 
     public UI_Manager m_ui_manager;
     public Modal_MarkSelector m_mark_selector_modal;
+    public string[] m_player_names;//these are set to the strings "Player 1" and "Player 2" in the scene.
 
     private GameState m_gamestate;
     private TTT_Gameboard m_gameboard;
@@ -49,7 +50,7 @@ public class TTTGameManager : MonoBehaviour {
     private Sprite[] m_player_mark_sprites;
 
     //Constants
-    private const string MAKE_MOVE_TEXT = "Make your move, Player {0}";
+    private const string MAKE_MOVE_TEXT = "Make your move, {0}";
 
     private const string PLAY_AGAIN_TITLE = "Play Again!";
     private const string PLAY_AGAIN_DESCRIPTION = "Would you like to choose new marks for this game?";
@@ -85,24 +86,23 @@ public class TTTGameManager : MonoBehaviour {
     private void selectPlayerMarks()
     {
         //begin by having player 1 select a mark to use in this game
-        selectMarkForPlayer(1);
+        selectMarkForPlayer(UI_Manager.PlayerUIIndex.Player1);
     }
 
 
 
-    private void selectMarkForPlayer(int player_num)
+    private void selectMarkForPlayer(UI_Manager.PlayerUIIndex player_index)
     {
-        Debug.Log("Selecting mark for player " + player_num);
-        if(player_num == 1)
+        if(player_index == UI_Manager.PlayerUIIndex.Player1)
         {
             m_gamestate = GameState.Player1_SelectMark;
-            m_mark_selector_modal.triggerModal(player_num);
+            m_mark_selector_modal.triggerModal(m_player_names[(int)player_index]);
         }
-        else if(player_num == 2)
+        else if(player_index == UI_Manager.PlayerUIIndex.Player2)
         {
             m_gamestate = GameState.Player2_SelectMark;
             Sprite player_1_sprite = m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1];
-            m_mark_selector_modal.triggerModal(player_num, player_1_sprite);
+            m_mark_selector_modal.triggerModal(m_player_names[(int)player_index], player_1_sprite);
         }
     }
 
@@ -114,7 +114,7 @@ public class TTTGameManager : MonoBehaviour {
     {
         constructGameBoard();
         //begin the first turn for player 1
-        getInputFromPlayer(1);
+        getInputFromPlayer(UI_Manager.PlayerUIIndex.Player1);
     }
 
     private void constructGameBoard()
@@ -139,7 +139,7 @@ public class TTTGameManager : MonoBehaviour {
         {
             m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1] = selected_sprite;
             //player 1 has selected, ask for player 2s choice
-            selectMarkForPlayer(2);
+            selectMarkForPlayer(UI_Manager.PlayerUIIndex.Player2);
         }
         else if (m_gamestate == GameState.Player2_SelectMark)
         {
@@ -167,11 +167,11 @@ public class TTTGameManager : MonoBehaviour {
         //Game is not yet over, so advance the gamestate to get input from the other player.
         if (m_gamestate == GameState.Player1_Turn)
         {
-            getInputFromPlayer(2);
+            getInputFromPlayer(UI_Manager.PlayerUIIndex.Player2);
         }
         else if (m_gamestate == GameState.Player2_Turn)
         {
-            getInputFromPlayer(1);
+            getInputFromPlayer(UI_Manager.PlayerUIIndex.Player1);
         }
         else
         {
@@ -188,25 +188,30 @@ public class TTTGameManager : MonoBehaviour {
         VoidCallback play_with_new_marks = chooseNewMarksAndPlayAgain;
 
         m_ui_manager.presentBinaryChoiceModal(PLAY_AGAIN_TITLE, PLAY_AGAIN_DESCRIPTION, NO, YES, playAgainUsingSameMarks, chooseNewMarksAndPlayAgain);
+
+        //clean up the game board
+        m_gameboard.clearBoard();
     }
 
     #endregion
 
     #region Gamestate Lifecycle Utility
 
-    private void getInputFromPlayer(int player_num)
+    private void getInputFromPlayer(UI_Manager.PlayerUIIndex player_index)
     {
-        if (player_num == 1)
+        if(player_index == UI_Manager.PlayerUIIndex.Player1)
         {
             m_gamestate = GameState.Player1_Turn;
-            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player1, string.Format(MAKE_MOVE_TEXT,
-                                                player_num), m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1]);
+            UI_Manager.PlayerUIIndex player_1_index = UI_Manager.PlayerUIIndex.Player1;
+            m_ui_manager.triggerAnimatedText(player_index, string.Format(MAKE_MOVE_TEXT,
+                                                m_player_names[(int)player_1_index]), m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player1]);
         }
-        else if (player_num == 2)
+        else if (player_index == UI_Manager.PlayerUIIndex.Player2)
         {
             m_gamestate = GameState.Player2_Turn;
-            m_ui_manager.triggerAnimatedText(UI_Manager.PlayerUIIndex.Player2, string.Format(MAKE_MOVE_TEXT, 
-                                                player_num), m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player2]);
+            UI_Manager.PlayerUIIndex player_2_index = UI_Manager.PlayerUIIndex.Player2;
+            m_ui_manager.triggerAnimatedText(player_2_index, string.Format(MAKE_MOVE_TEXT, 
+                                                m_player_names[(int)player_2_index]), m_player_mark_sprites[(int)UI_Manager.PlayerUIIndex.Player2]);
         }
 
         m_gameboard.setTilesToAcceptInput(m_gamestate);
@@ -222,7 +227,18 @@ public class TTTGameManager : MonoBehaviour {
         if(completion == GameCompletion.Win_Player1 || completion == GameCompletion.Win_Player2)
         {
             Debug.Log("WIN");
-            m_ui_manager.presentGameOverModal(true, completion.ToString(), null);
+            int winner_index = -1;
+            if(completion == GameCompletion.Win_Player1)
+            {
+                winner_index = (int)UI_Manager.PlayerUIIndex.Player1;
+            }
+            else 
+            {
+                winner_index = (int)UI_Manager.PlayerUIIndex.Player2;
+            }
+            Sprite winners_sprite = m_player_mark_sprites[winner_index];
+
+            m_ui_manager.presentGameOverModal(true, completion.ToString(), winners_sprite);
         }
         else if(completion == GameCompletion.Draw)
         {
