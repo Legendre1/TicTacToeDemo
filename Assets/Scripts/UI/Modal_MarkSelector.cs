@@ -16,7 +16,9 @@ public class Modal_MarkSelector : Modal_Base {
     private int m_selected_sprite_index;
     private const string SELECTION_TEXT = "{0} -       Choose Your Mark";
 
-    public void triggerModal(string selecting_player_name, Sprite dissallowed_sprite = null)
+    #region Public Access
+
+    public void triggerModal(string selecting_player_name, Sprite dissallowed_sprite)
     {
         setForSelectingPlayer(selecting_player_name);
         initializeSelectionDisplay();
@@ -44,7 +46,7 @@ public class Modal_MarkSelector : Modal_Base {
         }
 
         //Animate in
-        m_animator.SetBool("active", true);
+        m_animator.SetBool(ANIMATOR_STATE_BOOL, true);
     }
 
     public void selectionMade(int selection)
@@ -60,8 +62,10 @@ public class Modal_MarkSelector : Modal_Base {
 
     public override void onExitAnimationCompleted()
     {
-        TTTGameManager.GetInstance().reportSelectedMark(m_mark_sprites[m_selected_sprite_index]);
+        TTT_GameManager.GetInstance().reportSelectedMark(m_mark_sprites[m_selected_sprite_index]);
     }
+
+    #endregion
 
     #region Internal Utility
 
@@ -103,6 +107,7 @@ public class Modal_MarkSelector : Modal_Base {
         }
 
         Debug.LogError("Sprite index not found");
+        //this should cause an index error if something goes wrong
         return -1;
     }
 

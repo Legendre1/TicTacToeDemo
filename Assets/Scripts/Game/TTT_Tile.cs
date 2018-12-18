@@ -10,7 +10,7 @@ public class TTT_Tile : MonoBehaviour {
     public enum TileState
     { 
         NONE = -1,
-        PLAYER_1 = 0,//chosen so that they map to the index of m_player_mark_sprites
+        PLAYER_1 = 0,//indices chosen so that they match up to TTTGameManager.PlayerIndex
         PLAYER_2 = 1
     }
 
@@ -25,7 +25,7 @@ public class TTT_Tile : MonoBehaviour {
     private TileState m_tilemark_state;
     private Sprite[] m_player_mark_sprites;
 
-    private TTTGameManager m_game_manager;
+    private TTT_GameManager m_game_manager;
 
     private int m_row_index;
     private int m_column_index;
@@ -35,7 +35,7 @@ public class TTT_Tile : MonoBehaviour {
     private void Start()
     {
         //cache a ref for later use
-        m_game_manager = TTTGameManager.GetInstance();
+        m_game_manager = TTT_GameManager.GetInstance();
     }
 
     #region Public Access
@@ -54,23 +54,23 @@ public class TTT_Tile : MonoBehaviour {
     public void assignPlayerMarks(Sprite player_1_mark, Sprite player_2_mark)
     {
         m_player_mark_sprites = new Sprite[2];
-        m_player_mark_sprites[0] = player_1_mark;
-        m_player_mark_sprites[1] = player_2_mark;
+        m_player_mark_sprites[(int)TTT_GameManager.PlayerIndex.Player1] = player_1_mark;
+        m_player_mark_sprites[(int)TTT_GameManager.PlayerIndex.Player2] = player_2_mark;
 
         initializeTile();
     }
 
-    public void setInputState(TTTGameManager.GameState game_state)
+    public void setInputState(TTT_GameManager.GameState game_state)
     { 
-        if(game_state == TTTGameManager.GameState.Player1_Turn)
+        if(game_state == TTT_GameManager.GameState.Player1_Turn)
         {
             m_input_state = TileState.PLAYER_1;
         }
-        else if (game_state == TTTGameManager.GameState.Player2_Turn)
+        else if (game_state == TTT_GameManager.GameState.Player2_Turn)
         {
             m_input_state = TileState.PLAYER_2;
         }
-        else if (game_state == TTTGameManager.GameState.GameOver)
+        else if (game_state == TTT_GameManager.GameState.GameOver)
         {
             //the game has ended, do not accept further input
             m_input_state = TileState.NONE;
@@ -95,7 +95,7 @@ public class TTT_Tile : MonoBehaviour {
     {
         if(m_tilemark_state != TileState.NONE)
         {
-            Debug.LogError("Cannot choose this tile, it has already been chosen.");
+            Debug.LogError("Cannot choose this tile, it has already been marked.");
         }
         else
         {

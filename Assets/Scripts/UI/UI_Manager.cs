@@ -15,19 +15,10 @@ public class UI_Manager : MonoBehaviour {
 
     #endregion
 
-    #region Classes, Enums
-
-    public enum PlayerUIIndex
-    { 
-        Player1 = 0,
-        Player2 = 1
-    }
-
-    #endregion
-
     #region Member Vars
 
     public GameObject m_input_blocker_go;//a big button that blocks input to lower layers while an element is active.
+    public Modal_MarkSelector m_mark_selector_modal;
     public Modal_GameOverMenu m_gameover_modal;
     public Modal_TwoButtonPrompt m_binary_choice_modal;
     public UI_AnimatedElement[] m_animated_elements;
@@ -45,10 +36,10 @@ public class UI_Manager : MonoBehaviour {
 
     #region Public Access
 
-    public void triggerAnimatedText(PlayerUIIndex element_index, string output_text, Sprite output_sprite = null)
+    public void triggerAnimatedText(int element_index, string output_text, Sprite output_sprite = null)
     {
         m_input_blocker_go.SetActive(true);
-        m_animated_elements[(int)element_index].triggerAnimatedText(ENTRY_ANIMATION_TRIGGER, output_text, output_sprite);
+        m_animated_elements[element_index].triggerAnimatedText(ENTRY_ANIMATION_TRIGGER, output_text, output_sprite);
     }
 
     public void onDismissButtonPressed()
@@ -65,13 +56,18 @@ public class UI_Manager : MonoBehaviour {
         m_input_blocker_go.SetActive(false);
     }
 
+    public void presentMarkSelectionModal(string selecting_player_name, Sprite dissallowed_sprite = null)
+    {
+        m_mark_selector_modal.triggerModal(selecting_player_name, dissallowed_sprite);
+    }
+
     public void presentGameOverModal(bool winner_declared, float delay, string winning_player = "", Sprite winning_sprite = null)
     {
         StartCoroutine(EpresentGameOverModalAfterDelay(winner_declared, delay, winning_player, winning_sprite));
     }
 
     public void presentBinaryChoiceModal(string title, string description, string b1_text, string b2_text,
-                                TTTGameManager.VoidCallback b1_callback, TTTGameManager.VoidCallback b2_callback)
+                                TTT_GameManager.VoidCallback b1_callback, TTT_GameManager.VoidCallback b2_callback)
     {
         m_binary_choice_modal.triggerModal(title, description, b1_text, b2_text, b1_callback, b2_callback);
     }

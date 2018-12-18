@@ -13,6 +13,8 @@ public static class UserdataManager
         public static string GridSize = "grid_size";
     }
 
+    #region Public Userdata Access
+
     //Get/Set the grid size of the TTT game
     public static void SetGridSize(int grid_size)
     {
@@ -38,5 +40,7 @@ public static class UserdataManager
 
         return grid_size;
     }
+
+    #endregion
 
 }

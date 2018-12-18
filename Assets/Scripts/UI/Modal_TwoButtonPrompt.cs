@@ -14,15 +14,15 @@ public class Modal_TwoButtonPrompt : Modal_Base
     public Text m_button_1_text;
     public Text m_button_2_text;
 
-    private TTTGameManager.VoidCallback m_button_1_callback;
-    private TTTGameManager.VoidCallback m_button_2_callback;
+    private TTT_GameManager.VoidCallback m_button_1_callback;
+    private TTT_GameManager.VoidCallback m_button_2_callback;
 
     #endregion
 
     #region Entry/Exit Methods
 
     public void triggerModal(string title, string description, string b1_text, string b2_text,
-                                TTTGameManager.VoidCallback b1_callback, TTTGameManager.VoidCallback b2_callback)
+                                TTT_GameManager.VoidCallback b1_callback, TTT_GameManager.VoidCallback b2_callback)
     {
         m_title_text.text = title;
         m_description_text.text = description;
@@ -34,7 +34,7 @@ public class Modal_TwoButtonPrompt : Modal_Base
         m_button_2_callback = b2_callback;
 
         //Animate in
-        m_animator.SetBool("active", true);
+        m_animator.SetBool(ANIMATOR_STATE_BOOL, true);
     }
 
     public void onButton1Pressed()

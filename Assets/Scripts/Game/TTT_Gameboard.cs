@@ -33,6 +33,7 @@ public class TTT_Gameboard : MonoBehaviour {
     private Image m_board_image;
     private RectTransform m_board_rectform;
     private TTT_Tile[] m_possible_winning_tiles;//array of tiles to be examined for a win and reused
+    private bool m_board_constructed;
 
     //Constants
     private const float WIN_PULSE_DELAY = 0.4f;//the timing between pulses of tiles showing a winning sequence
@@ -54,10 +55,18 @@ public class TTT_Gameboard : MonoBehaviour {
 
     public void constructGameBoard(int grid_size)
     {
+        showBoard();
+
+        if (m_board_constructed)
+        {
+            //board is already constructed from a previous game, no need to do it again
+            return;
+        }
+
         //Resize the gameboard image to fit all tiles
         float board_side_length = (m_tile_spacing * (grid_size)) + (2 * m_outer_board_buffer_width);
         m_board_rectform.sizeDelta = new Vector2(board_side_length, board_side_length);
-        showBoard();
+
 
         //Fill the board with tiles
         float half_anchor_width = m_tile_spacing * grid_size / 2;
@@ -97,6 +106,9 @@ public class TTT_Gameboard : MonoBehaviour {
             Debug.LogError("No win conditions found for grid size " + grid_size);
         }
 
+        //mark that the board is constructed
+        m_board_constructed = true;
+
 #if UNITY_EDITOR
         verifyWinConditions(grid_size);
 #endif
@@ -104,8 +116,7 @@ public class TTT_Gameboard : MonoBehaviour {
 
     public void clearBoard()
     {
-        //Clear the board from view but keep it intact
-        Debug.Log("Clear board");
+        //Clear the board from view but keep the tiles themselves intact
         hideBoard();
 
         foreach(TTT_Tile tile in m_board_tiles)
@@ -123,7 +134,7 @@ public class TTT_Gameboard : MonoBehaviour {
         }
     }
 
-    public void setTilesToAcceptInput(TTTGameManager.GameState current_state)
+    public void setTilesToAcceptInput(TTT_GameManager.GameState current_state)
     { 
         for(int n = 0; n < m_board_tiles.Count; n++)
         {
@@ -131,7 +142,7 @@ public class TTT_Gameboard : MonoBehaviour {
         }
     }
 
-    public TTTGameManager.GameCompletion checkForGameCompletion()
+    public TTT_GameManager.GameCompletion checkForGameCompletion()
     {
         //this method examines the gameboard and returns true if a win or draw is detected.
         //search for a win by either player
@@ -140,23 +151,23 @@ public class TTT_Gameboard : MonoBehaviour {
         {
             highlightWinningSequence();
 
-            if (winning_player ==(int)UI_Manager.PlayerUIIndex.Player1)
+            if (winning_player ==(int)TTT_GameManager.PlayerIndex.Player1)
             {
-                return TTTGameManager.GameCompletion.Win_Player1;
+                return TTT_GameManager.GameCompletion.Win_Player1;
             }
-            else if(winning_player == (int)UI_Manager.PlayerUIIndex.Player2)
+            else if(winning_player == (int)TTT_GameManager.PlayerIndex.Player2)
             {
-                return TTTGameManager.GameCompletion.Win_Player2;
+                return TTT_GameManager.GameCompletion.Win_Player2;
             }
         }
 
         //search for a draw (full board)
         if(isBoardFull())
         {
-            return TTTGameManager.GameCompletion.Draw;
+            return TTT_GameManager.GameCompletion.Draw;
         }
 
-        return TTTGameManager.GameCompletion.Incomplete;
+        return TTT_GameManager.GameCompletion.Incomplete;
     }
 
     #endregion
@@ -213,11 +224,11 @@ public class TTT_Gameboard : MonoBehaviour {
         //all the tiles are marked and match one another. return the winners index
         if(first_tile.getTileMarkState() == TTT_Tile.TileState.PLAYER_1)
         {
-            return (int)UI_Manager.PlayerUIIndex.Player1;
+            return (int)TTT_GameManager.PlayerIndex.Player1;
         }
         else if (first_tile.getTileMarkState() == TTT_Tile.TileState.PLAYER_2)
         {
-            return (int)UI_Manager.PlayerUIIndex.Player2;
+            return (int)TTT_GameManager.PlayerIndex.Player2;
         }
         else
         {

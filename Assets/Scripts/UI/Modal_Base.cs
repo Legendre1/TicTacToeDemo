@@ -6,6 +6,8 @@ public abstract class Modal_Base : MonoBehaviour {
 
     public Animator m_animator;
 
+    protected const string ANIMATOR_STATE_BOOL = "active";
+
     public virtual void onExitAnimationCompleted()
     { 
         //stub implementation for animation call
@@ -14,6 +16,6 @@ public abstract class Modal_Base : MonoBehaviour {
     protected void dismissModal()
     {
         //Animate out
-        m_animator.SetBool("active", false);
+        m_animator.SetBool(ANIMATOR_STATE_BOOL, false);
     }
 }

@@ -5,7 +5,13 @@ using UnityEngine.UI;
 
 public class OptionsMenuManager : MonoBehaviour {
 
+    #region Member Vars
+
     public Toggle m_4x4_toggle;
+
+    #endregion
+
+    #region Mono Methods
 
     private void Start()
     {
@@ -16,10 +22,23 @@ public class OptionsMenuManager : MonoBehaviour {
         }
     }
 
+    #endregion
+
+    #region Button Methods
+
     public void goToMainMenu()
     {
         ApplicationLifecycleManager.GoToMainMenu();
     }
+
+    public void goToGame()
+    {
+        ApplicationLifecycleManager.GoToTTTGame();
+    }
+
+    #endregion
+
+    #region Toggle Methods
 
     public void SetGridTo3X3(bool toggled)
     { 
@@ -37,8 +56,14 @@ public class OptionsMenuManager : MonoBehaviour {
         }
     }
 
+    #endregion
+
+    #region Utility
+
     private void setGameGridSize(int grid_size)
     {
         UserdataManager.SetGridSize(grid_size);
     }
+
+    #endregion
 }

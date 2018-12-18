@@ -42,7 +42,7 @@ public class Modal_GameOverMenu : Modal_Base
         }
 
         //Animate in
-        m_animator.SetBool("active", true);
+        m_animator.SetBool(ANIMATOR_STATE_BOOL, true);
     }
 
     #endregion
@@ -52,7 +52,7 @@ public class Modal_GameOverMenu : Modal_Base
     public void onPlayAgain()
     {
         dismissModal();
-        TTTGameManager.GetInstance().playAgain();
+        TTT_GameManager.GetInstance().playAgain();
     }
 
     public void OnGuitGame()
