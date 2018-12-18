@@ -15,14 +15,21 @@ public class UI_Manager : MonoBehaviour {
 
     #endregion
 
+    #region Classes, Enums
+
     public enum PlayerUIIndex
     { 
         Player1 = 0,
         Player2 = 1
     }
+
+    #endregion
+
     #region Member Vars
 
     public GameObject m_input_blocker_go;//a big button that blocks input to lower layers while an element is active.
+    public Modal_GameOverMenu m_gameover_modal;
+    public Modal_TwoButtonPrompt m_binary_choice_modal;
     public UI_AnimatedElement[] m_animated_elements;
 
 
@@ -56,6 +63,17 @@ public class UI_Manager : MonoBehaviour {
     public void onElementAnimationCompleted()
     {
         m_input_blocker_go.SetActive(false);
+    }
+
+    public void presentGameOverModal(bool winner_declared, string winning_player = "", Sprite winning_sprite = null)
+    {
+        m_gameover_modal.triggerModal(winner_declared, winning_player, winning_sprite);
+    }
+
+    public void presentBinaryChoiceModal(string title, string description, string b1_text, string b2_text,
+                                TTTGameManager.VoidCallback b1_callback, TTTGameManager.VoidCallback b2_callback)
+    {
+        m_binary_choice_modal.triggerModal(title, description, b1_text, b2_text, b1_callback, b2_callback);
     }
 
     #endregion

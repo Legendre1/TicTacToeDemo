@@ -28,7 +28,6 @@ public class Modal_MarkSelector : Modal_Base {
             Debug.Log("Disabling mark " + dissallowed_index);
             disableMarkChoice(dissallowed_index);
         }
-        m_animator.SetBool("active", true);
 
         //Set a listener for the toggle switches
         for(int n = 0; n < m_toggles.Length; n++)
@@ -44,6 +43,9 @@ public class Modal_MarkSelector : Modal_Base {
             }
             );
         }
+
+        //Animate in
+        m_animator.SetBool("active", true);
     }
 
     public void selectionMade(int selection)
@@ -54,10 +56,10 @@ public class Modal_MarkSelector : Modal_Base {
 
     public void selectionComplete()
     {
-        m_animator.SetBool("active", false);
+        dismissModal();
     }
 
-    public void onExitAnimationCompleted()
+    public override void onExitAnimationCompleted()
     {
         TTTGameManager.GetInstance().reportSelectedMark(m_mark_sprites[m_selected_sprite_index]);
     }

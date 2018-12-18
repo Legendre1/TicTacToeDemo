@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TTTGameManager : MonoBehaviour {
 
-    #region Enums and Classes
+    #region Enums, Delegates, Classes
 
     public enum GameState
     { 
@@ -22,6 +22,8 @@ public class TTTGameManager : MonoBehaviour {
         Win_Player2,
         Draw
     }
+
+    public delegate void VoidCallback();
 
     #endregion
 
@@ -48,6 +50,12 @@ public class TTTGameManager : MonoBehaviour {
 
     //Constants
     private const string MAKE_MOVE_TEXT = "Make your move, Player {0}";
+
+    private const string PLAY_AGAIN_TITLE = "Play Again!";
+    private const string PLAY_AGAIN_DESCRIPTION = "Would you like to choose new marks for this game?";
+    private const string YES = "Yes";
+    private const string NO = "No";
+
     private const int NUMBER_OF_PLAYERS = 2;
 
     #endregion
@@ -171,6 +179,17 @@ public class TTTGameManager : MonoBehaviour {
         }
     }
 
+    public void playAgain()
+    {
+        //user requested another game. show a binary choice prompt which allows 
+        //the users to either play again using the same marks, or choose new marks
+
+        VoidCallback play_with_same_marks = playAgainUsingSameMarks;
+        VoidCallback play_with_new_marks = chooseNewMarksAndPlayAgain;
+
+        m_ui_manager.presentBinaryChoiceModal(PLAY_AGAIN_TITLE, PLAY_AGAIN_DESCRIPTION, NO, YES, playAgainUsingSameMarks, chooseNewMarksAndPlayAgain);
+    }
+
     #endregion
 
     #region Gamestate Lifecycle Utility
@@ -203,15 +222,27 @@ public class TTTGameManager : MonoBehaviour {
         if(completion == GameCompletion.Win_Player1 || completion == GameCompletion.Win_Player2)
         {
             Debug.Log("WIN");
+            m_ui_manager.presentGameOverModal(true, completion.ToString(), null);
         }
         else if(completion == GameCompletion.Draw)
         {
             Debug.Log("DRAW");
+            m_ui_manager.presentGameOverModal(false);
         }
         else
         {
             Debug.LogError("Invalid completion state at game over");
         }
+    }
+
+    private void playAgainUsingSameMarks()
+    {
+        beginGame();
+    }
+
+    private void chooseNewMarksAndPlayAgain()
+    {
+        selectPlayerMarks();
     }
 
     #endregion
